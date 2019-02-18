@@ -32,8 +32,8 @@ public class InMemoryFlightRepository implements FlightRepository {
     public List<Flight> getFlightsFromInTimeInterval(final String airportFrom, final Date dateFrom, final Date dateTo) {
         return flights.stream()
                 .filter(f -> f.getAirportFrom().equals(airportFrom)
-                        && f.getArrival().after(dateFrom)
-                        && f.getArrival().before(dateTo))
+                        && (f.getDeparture().equals(dateFrom) || f.getDeparture().after(dateFrom))
+                        && (f.getDeparture().equals(dateTo) || f.getDeparture().before(dateTo)))
                 .collect(Collectors.toList());
     }
 

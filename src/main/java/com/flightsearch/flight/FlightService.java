@@ -5,8 +5,6 @@ import com.flightsearch.flight.util.FlightTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,12 +15,11 @@ import java.util.stream.Collectors;
 public class FlightService {
 
     private final FlightRepository flightRepository;
-    private final DateFormat dateFormat;
 
     @Autowired
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSSZ");
+
     }
 
     public List<Flight> getDirectFlights(final String airportFrom, String airportTo, final Date dateTo) {
