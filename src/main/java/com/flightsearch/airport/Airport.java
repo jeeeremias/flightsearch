@@ -2,31 +2,31 @@ package com.flightsearch.airport;
 
 public class Airport {
 
-    private String name;
-    private String airport;
-    private String city;
+    private String nome;
+    private String aeroporto;
+    private String cidade;
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getAirport() {
-        return airport;
+    public String getAeroporto() {
+        return aeroporto;
     }
 
-    public void setAirport(String airport) {
-        this.airport = airport;
+    public void setAeroporto(String aeroporto) {
+        this.aeroporto = aeroporto;
     }
 
-    public String getCity() {
-        return city;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 }

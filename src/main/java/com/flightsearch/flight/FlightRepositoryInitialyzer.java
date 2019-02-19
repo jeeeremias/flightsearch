@@ -5,14 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightsearch.flight.model.Flight;
 import com.opencsv.CSVReaderBuilder;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,15 +31,22 @@ import java.util.List;
 @Configuration
 public class FlightRepositoryInitialyzer {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private final ObjectMapper mapper = new ObjectMapper();
+    private final ResourceLoader resourceLoader;
+
+    @Autowired
+    public FlightRepositoryInitialyzer(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     @Bean
     FlightRepository initFlightRepository() throws IOException, ParseException {
         List<Flight> flights = new ArrayList<>();
 
-        FileReader fileReader = new FileReader(ResourceUtils.getFile("classpath:uberair.csv"));
-        List<String[]> csvData = new CSVReaderBuilder(fileReader)
+        Resource ubers = resourceLoader.getResource("classpath:uberair.csv");
+        Reader isReader = new InputStreamReader(ubers.getInputStream());
+        List<String[]> csvData = new CSVReaderBuilder(isReader)
                 .withSkipLines(1)
                 .build()
                 .readAll();
@@ -50,8 +63,9 @@ public class FlightRepositoryInitialyzer {
             flights.add(flight);
         }
 
-       JsonNode jsonData =
-                mapper.readTree(ResourceUtils.getFile("classpath:99planes.json"));
+        InputStream planes = resourceLoader
+            .getResource("classpath:99planes.json").getInputStream();
+        JsonNode jsonData = mapper.readTree(planes);
         for (JsonNode jsonPlane : jsonData) {
             flight = new Flight();
             flight.setFlightNumber(jsonPlane.get("voo").asText());

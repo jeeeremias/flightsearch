@@ -19,7 +19,7 @@ public class InMemoryAirportRepository implements AirportRepository {
     @Override
     public Optional<Airport> getByAirport(String airport) {
         return airports.stream()
-                .filter(a -> a.getAirport().equals(airport))
+                .filter(a -> a.getAeroporto().equals(airport))
                 .findFirst();
     }
 }
