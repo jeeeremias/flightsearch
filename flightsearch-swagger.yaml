@@ -1,0 +1,105 @@
+swagger: "2.0"
+info:
+  description: "Documentação da API de voos"
+  version: "1.0.0"
+  title: "Flight Search"
+host: localhost:8080
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /flights:
+    get:
+      tags:
+      - "Flights"
+      summary: "Retorna os voos de um destino e um dia especificados com escala de até 1 aeroporto"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Request realizado com sucesso"
+          schema:
+            $ref: '#/definitions/PlanesResponse'
+        400:
+          description: "Parâmetros inválidos"
+      parameters: 
+      - in: query
+        name: airportFrom
+        type: string
+        required: true
+        description: Sigla do aeroporto de origem. ex. BSB
+      - in: query
+        name: airportTo
+        type: string
+        required: true
+        description: Sigla do aeroporto de destino. ex. VCP
+      - in: query
+        name: date
+        type: string
+        required: true
+        description: Data do voo ex. yyyy-MM-dd
+  /airports:
+    get:
+      tags:
+      - "Airports"
+      summary: "Retorna lista de aeroportos"
+      consumes:
+      - "application/json"
+      responses:
+        200:
+          description: "Request realizado com sucesso"
+          schema:
+            $ref: '#/definitions/Airport'
+definitions:
+  PlanesResponse:
+    type: array
+    items:
+      properties:
+        origem: 
+          type: string
+          example: BSB
+        destino:
+          type: string
+          example: VCP
+        saida:
+          type: string
+          example: 2019-02-10 19:30:00.000-0200
+        chegada:
+          type: string
+          example: 2019-02-11 15:40:00.000-0200
+        trechos:
+          type: array
+          maxItems: 2
+          items:
+            properties:
+              origem: 
+                type: string
+                example: BSB
+              destino:
+                type: string
+                example: VCP
+              saida:
+                type: string
+                example: 2019-02-10 19:30:00.000-0200
+              chegada:
+                type: string
+                example: 2019-02-11 15:40:00.000-0200
+              operadora:
+                type: string
+                example: 99planes
+              preco:
+                type: number
+                example: 131.21
+        
+  Airport:
+    type: object
+    properties:
+      nome:
+        type: string
+        example: Aeroporto Internacional Juscelino Kubitschek
+      aeroporto:
+        type: string
+        example: BSB
+      cidade:
+        type: string
+        example: Brasília
