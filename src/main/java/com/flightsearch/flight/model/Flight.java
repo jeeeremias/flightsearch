@@ -10,7 +10,7 @@ public class Flight {
     private String company;
     private Date departure;
     private Date arrival;
-    private long price;
+    private float price;
 
     public String getFlightNumber() {
         return flightNumber;
@@ -60,11 +60,11 @@ public class Flight {
         this.arrival = arrival;
     }
 
-    public long getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }

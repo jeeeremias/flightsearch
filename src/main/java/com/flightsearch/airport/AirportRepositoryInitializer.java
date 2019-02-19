@@ -18,6 +18,6 @@ public class AirportRepositoryInitializer {
 
     @Bean
     AirportRepository initAirportRepository() throws IOException {
-        return mapper.readValue(new File("aeroportos.json"), new TypeReference<List<Airport>>(){});
+        return mapper.readValue(new File(getClass().getResource("/aeroportos.json").getFile()), new TypeReference<List<Airport>>(){});
     }
 }

@@ -3,6 +3,7 @@ package com.flightsearch.flight;
 import com.flightsearch.flight.model.Flight;
 import com.flightsearch.flight.util.FlightTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Lazy
 public class FlightService {
 
     private final FlightRepository flightRepository;

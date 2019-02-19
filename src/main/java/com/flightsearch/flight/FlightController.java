@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@RestController()
+@RestController
 public class FlightController {
 
     private final FlightService flightService;
@@ -27,7 +27,7 @@ public class FlightController {
     }
 
     @GetMapping(value = "/flights", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void getFlights(String airportFrom, String airportTo, long date) {
+    public List<ResponseDTO> getFlights(String airportFrom, String airportTo, long date) {
         List<Flight> directFlights = flightService.getDirectFlights(airportFrom, airportTo, new Date(date));
         List<LinkedList<Flight>> indirectFlights = flightService.getIndirectFlights(airportFrom, airportTo, new Date(date));
         List<ResponseDTO> response = new ArrayList<>();
@@ -38,5 +38,6 @@ public class FlightController {
         for (LinkedList<Flight> indirectFlight : indirectFlights) {
             response.add(new ResponseDTO(indirectFlight, dateFormat));
         }
+        return response;
     }
 }

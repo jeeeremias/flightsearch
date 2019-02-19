@@ -30,7 +30,7 @@ public class FlightRepositoryInitialyzer {
     FlightRepository initFlightRepository() throws IOException, ParseException {
         List<Flight> flights = new ArrayList<>();
 
-        FileReader fileReader = new FileReader("uberair.csv");
+        FileReader fileReader = new FileReader(getClass().getResource("/uberair.csv").getFile());
         List<String[]> csvData = new CSVReaderBuilder(fileReader)
                 .withSkipLines(1)
                 .build()
@@ -44,12 +44,12 @@ public class FlightRepositoryInitialyzer {
             flight.setCompany("UberAir");
             flight.setDeparture(getDateFromString(csvDataLine[3], csvDataLine[4]));
             flight.setArrival(getDateFromString(csvDataLine[3], csvDataLine[5]));
-            flight.setPrice(Long.valueOf(csvDataLine[6]));
+            flight.setPrice(Float.valueOf(csvDataLine[6]));
             flights.add(flight);
         }
 
         List<Map<String, String>> jsonData =
-                mapper.readValue(new File("99planes.json"), new TypeReference<Map<String, String>>(){});
+                mapper.readValue(new File(getClass().getResource("/99planes.json").getFile()), new TypeReference<Map<String, String>>(){});
         for (Map<String, String> jsonDataLine : jsonData) {
             flight = new Flight();
             flight.setFlightNumber(jsonDataLine.get("voo"));
@@ -58,7 +58,7 @@ public class FlightRepositoryInitialyzer {
             flight.setCompany("99Planes");
             flight.setDeparture(getDateFromString(jsonDataLine.get("data_saida"), jsonDataLine.get("saida")));
             flight.setArrival(getDateFromString(jsonDataLine.get("data_saida"), jsonDataLine.get("chegada")));
-            flight.setPrice(Long.valueOf(jsonDataLine.get("valor")));
+            flight.setPrice(Float.valueOf(jsonDataLine.get("valor")));
             flights.add(flight);
         }
         return new InMemoryFlightRepository(flights);
