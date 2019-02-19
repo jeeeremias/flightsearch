@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class FlightController {
@@ -38,6 +39,8 @@ public class FlightController {
         for (LinkedList<Flight> indirectFlight : indirectFlights) {
             response.add(new ResponseDTO(indirectFlight, dateFormat));
         }
-        return response;
+        return response.stream()
+            .sorted((f1, f2) -> f1.chegada.compareTo(f2.chegada))
+            .collect(Collectors.toList());
     }
 }

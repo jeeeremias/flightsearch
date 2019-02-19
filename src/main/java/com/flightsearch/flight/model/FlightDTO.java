@@ -1,5 +1,6 @@
 package com.flightsearch.flight.model;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 
 public class FlightDTO {
@@ -18,5 +19,5 @@ public class FlightDTO {
     public final String saida;
     public final String chegada;
     public final String operadora;
-    public final float preco;
+    public final BigDecimal preco;
 }

@@ -1,23 +1,25 @@
 package com.flightsearch.flight;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightsearch.flight.model.Flight;
 import com.opencsv.CSVReaderBuilder;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Lazy
 @Configuration
@@ -30,7 +32,7 @@ public class FlightRepositoryInitialyzer {
     FlightRepository initFlightRepository() throws IOException, ParseException {
         List<Flight> flights = new ArrayList<>();
 
-        FileReader fileReader = new FileReader(getClass().getResource("/uberair.csv").getFile());
+        FileReader fileReader = new FileReader(ResourceUtils.getFile("classpath:uberair.csv"));
         List<String[]> csvData = new CSVReaderBuilder(fileReader)
                 .withSkipLines(1)
                 .build()
@@ -44,21 +46,21 @@ public class FlightRepositoryInitialyzer {
             flight.setCompany("UberAir");
             flight.setDeparture(getDateFromString(csvDataLine[3], csvDataLine[4]));
             flight.setArrival(getDateFromString(csvDataLine[3], csvDataLine[5]));
-            flight.setPrice(Float.valueOf(csvDataLine[6]));
+            flight.setPrice(new BigDecimal(csvDataLine[6]));
             flights.add(flight);
         }
 
-        List<Map<String, String>> jsonData =
-                mapper.readValue(new File(getClass().getResource("/99planes.json").getFile()), new TypeReference<Map<String, String>>(){});
-        for (Map<String, String> jsonDataLine : jsonData) {
+       JsonNode jsonData =
+                mapper.readTree(ResourceUtils.getFile("classpath:99planes.json"));
+        for (JsonNode jsonPlane : jsonData) {
             flight = new Flight();
-            flight.setFlightNumber(jsonDataLine.get("voo"));
-            flight.setAirportFrom(jsonDataLine.get("origem"));
-            flight.setAirportTo(jsonDataLine.get("destino"));
+            flight.setFlightNumber(jsonPlane.get("voo").asText());
+            flight.setAirportFrom(jsonPlane.get("origem").asText());
+            flight.setAirportTo(jsonPlane.get("destino").asText());
             flight.setCompany("99Planes");
-            flight.setDeparture(getDateFromString(jsonDataLine.get("data_saida"), jsonDataLine.get("saida")));
-            flight.setArrival(getDateFromString(jsonDataLine.get("data_saida"), jsonDataLine.get("chegada")));
-            flight.setPrice(Float.valueOf(jsonDataLine.get("valor")));
+            flight.setDeparture(getDateFromString(jsonPlane.get("data_saida").asText(), jsonPlane.get("saida").asText()));
+            flight.setArrival(getDateFromString(jsonPlane.get("data_saida").asText(), jsonPlane.get("chegada").asText()));
+            flight.setPrice(new BigDecimal(jsonPlane.get("valor").toString()));
             flights.add(flight);
         }
         return new InMemoryFlightRepository(flights);

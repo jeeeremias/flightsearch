@@ -1,5 +1,6 @@
 package com.flightsearch.flight.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Flight {
@@ -10,7 +11,7 @@ public class Flight {
     private String company;
     private Date departure;
     private Date arrival;
-    private float price;
+    private BigDecimal price;
 
     public String getFlightNumber() {
         return flightNumber;
@@ -60,11 +61,11 @@ public class Flight {
         this.arrival = arrival;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
