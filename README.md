@@ -25,6 +25,6 @@ mvn spring-boot:run
 ## Endpoint
 API documentation: https://github.com/jeeeremias/flightsearch/blob/master/flightsearch-swagger.yaml
 
-- Acesse: https://editor.swagger.io/
+- Access: https://editor.swagger.io/
 - File -> Import File
-- Faça upload do arquivo .yaml acima
+- Upload the .yaml file above
