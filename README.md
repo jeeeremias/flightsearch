@@ -22,3 +22,5 @@ docker run -p 8080:8080 flightsearch
 ```
 mvn spring-boot:run
 ```
+## Endpoint
+API documentation: https://github.com/jeeeremias/flightsearch/blob/master/flightsearch-swagger.yaml
